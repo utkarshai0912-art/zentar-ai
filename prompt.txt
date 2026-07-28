@@ -1,214 +1,109 @@
-You are an expert FastAPI and Railway deployment engineer.
+You are an expert Railway deployment engineer.
 
-The project is already complete.
+The application is already complete.
 
-DO NOT rebuild the project.
+DO NOT rebuild the application.
 
-DO NOT redesign the architecture.
+ONLY fix the Railway deployment configuration.
 
-ONLY fix the Railway deployment.
+=========================================
+CURRENT ERROR
+=========================================
 
-Current Status:
+Railway reports:
 
-✔ Build succeeds
-✔ Image is pushed successfully
-✔ Service starts deployment
-❌ Railway Health Check fails
+"Your build failed because the repository at this commit contains a railway.json configured to use the Dockerfile builder, but no usable Docker image was produced. A newer commit already switches to a working Nixpacks configuration."
 
-Logs show:
+This indicates the project still contains old Docker-based Railway configuration that conflicts with the current deployment.
 
-Starting Healthcheck
+=========================================
+YOUR TASK
+=========================================
 
-Path: /health
+Inspect the entire repository and remove every Docker-based Railway configuration.
 
-Retry window: 30s
+Specifically:
 
-Attempt #1 failed with service unavailable
+1. Remove or replace any `railway.json` that specifies:
+   - builder: DOCKERFILE
+   - dockerfilePath
+   - docker build configuration
 
-Your task is to find the root cause and permanently fix it.
+2. Remove any obsolete deployment configuration that forces Docker.
 
-=================================================
-CHECK ALL POSSIBLE CAUSES
-=================================================
+3. Verify there are no conflicting deployment files.
 
-Inspect the entire backend and verify:
+=========================================
+USE NIXPACKS ONLY
+=========================================
 
-1. The FastAPI server is actually starting.
+Configure Railway to use Nixpacks instead of Docker.
 
-2. The application binds to
+Generate or fix:
 
-host = 0.0.0.0
+- nixpacks.toml
+- railway.toml (if required)
+- Procfile (if required)
+- requirements.txt
+- runtime.txt (if required)
 
-instead of localhost.
+Do NOT generate:
 
-3. The application listens on
+- Dockerfile
+- docker-compose.yml
+- railway.json configured for Docker
 
-PORT=os.environ["PORT"]
+=========================================
+FASTAPI CONFIGURATION
+=========================================
 
-instead of a hardcoded port.
+Ensure the backend starts using:
 
-4. Startup events are not crashing.
+- Host: 0.0.0.0
+- Port: environment variable PORT
+- Production-ready Uvicorn or Gunicorn configuration
+- Railway-compatible startup command
 
-5. Database connection failures do not prevent server startup.
+=========================================
+PROJECT STRUCTURE
+=========================================
 
-6. Redis connection failures do not prevent startup.
+Automatically detect:
 
-7. Vector database failures do not prevent startup.
+- Backend location
+- Python entry point
+- FastAPI app instance
+- Correct module path
+- Existing deployment files
 
-8. MCP failures do not stop the API.
+If the backend is inside `/backend`, configure Railway to build from that directory correctly.
 
-9. Browser initialization (Playwright/Chromium) does not block startup.
+=========================================
+VALIDATE
+=========================================
 
-10. Background workers should start after the API becomes healthy.
+Check for:
 
-=================================================
-HEALTH ENDPOINT
-=================================================
+- Duplicate Railway configs
+- Old Docker configs
+- Invalid build commands
+- Wrong start command
+- Missing dependencies
+- Incorrect working directory
+- Health check configuration
 
-Create or fix
-
-GET /health
-
-It must return immediately.
-
-Example:
-
-{
-  "status":"ok",
-  "service":"backend",
-  "version":"1.0.0"
-}
-
-The endpoint must NOT:
-
-Connect to database
-
-Connect to Redis
-
-Launch browsers
-
-Load AI models
-
-Initialize MCP servers
-
-Call external APIs
-
-Only verify that the API process is alive.
-
-=================================================
-STARTUP FIX
-=================================================
-
-Move heavy initialization into background startup tasks.
-
-Examples:
-
-Playwright
-
-Browser pool
-
-Redis
-
-Qdrant
-
-Supabase
-
-OpenAI
-
-Embedding models
-
-MCP servers
-
-Load these AFTER the server starts accepting requests.
-
-=================================================
-ERROR HANDLING
-=================================================
-
-If any external dependency fails:
-
-Database
-
-Redis
-
-Supabase
-
-Qdrant
-
-Playwright
-
-Chromium
-
-MCP
-
-OpenAI
-
-Gemini
-
-Anthropic
-
-SMTP
-
-Do NOT crash the server.
-
-Instead:
-
-Log the error
-
-Mark service unavailable internally
-
-Continue running
-
-=================================================
-RAILWAY CONFIGURATION
-=================================================
-
-Verify:
-
-PORT environment variable
-
-Host = 0.0.0.0
-
-Correct startup command
-
-Correct working directory
-
-Correct Procfile
-
-Correct railway.toml
-
-Correct requirements.txt
-
-=================================================
-VERIFY PLAYWRIGHT
-=================================================
-
-If Playwright is enabled:
-
-Ensure Chromium exists.
-
-If Chromium cannot launch,
-
-disable browser service temporarily
-
-instead of crashing the backend.
-
-=================================================
+=========================================
 OUTPUT
-=================================================
+=========================================
 
-1. Identify the exact reason the Railway health check fails.
+Provide:
 
-2. Show every affected file.
-
-3. Fix all startup issues.
-
-4. Generate corrected code.
-
-5. Ensure /health responds in under 100ms.
-
-6. Ensure Railway health checks pass.
-
-7. Ensure the backend continues running even if optional services fail.
-
-The final backend must deploy successfully on Railway without Docker and pass the Railway health check on the first attempt.
+1. Root cause of the deployment failure.
+2. Every incorrect deployment file.
+3. Every corrected deployment file.
+4. Complete contents of each new file.
+5. Railway Root Directory.
+6. Railway Build Command.
+7. Railway Start Command.
+8. Deployment checklist.
+9. Confirm the project deploys successfully on Railway using Nixpacks without Docker.
