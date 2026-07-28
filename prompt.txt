@@ -1,216 +1,214 @@
-The application is already fully developed and production-ready.
+You are an expert FastAPI and Railway deployment engineer.
 
-DO NOT redesign the UI.
-DO NOT refactor the existing architecture.
-DO NOT modify existing APIs unless required.
-DO NOT change the database schema unless absolutely necessary.
-DO NOT touch any existing feature.
+The project is already complete.
 
-Your task is ONLY to implement the remaining feature: **User API Keys, Secrets Vault, Environment Variables, and Integration Management**.
+DO NOT rebuild the project.
 
-This feature must integrate seamlessly into the existing application.
+DO NOT redesign the architecture.
 
-==============================
-FEATURE: USER SECRETS VAULT
-==============================
+ONLY fix the Railway deployment.
 
-Create a new page:
+Current Status:
 
-Settings → API Keys & Integrations
+✔ Build succeeds
+✔ Image is pushed successfully
+✔ Service starts deployment
+❌ Railway Health Check fails
 
-Users should be able to securely manage their own credentials without relying on platform-owned API keys.
+Logs show:
 
-The application owner should also have the option to provide platform API keys, but users can override them with their own.
+Starting Healthcheck
 
-=================================
-SUPPORTED AI PROVIDERS
-=================================
+Path: /health
 
-Allow users to add credentials for:
+Retry window: 30s
 
-- OpenAI
-- Anthropic
-- Google Gemini
-- OpenRouter
-- Groq
-- Together AI
-- Fireworks AI
-- DeepSeek
-- xAI
-- Mistral AI
-- Cohere
-- Azure OpenAI
-- Ollama
-- LM Studio
-- Any OpenAI-Compatible API
+Attempt #1 failed with service unavailable
 
-Each provider should support:
+Your task is to find the root cause and permanently fix it.
 
-- API Key
-- Base URL
-- Organization ID (optional)
-- Project ID (optional)
-- Default Model
-- Max Tokens
-- Temperature
-- Timeout
+=================================================
+CHECK ALL POSSIBLE CAUSES
+=================================================
 
-Users should be able to:
+Inspect the entire backend and verify:
 
-- Add
-- Edit
-- Delete
-- Test Connection
-- Enable/Disable
-- Set Default Provider
-- Configure Provider Priority
-- Configure Automatic Fallback
+1. The FastAPI server is actually starting.
 
-=================================
-CUSTOM ENVIRONMENT VARIABLES
-=================================
+2. The application binds to
 
-Users can create unlimited custom variables.
+host = 0.0.0.0
+
+instead of localhost.
+
+3. The application listens on
+
+PORT=os.environ["PORT"]
+
+instead of a hardcoded port.
+
+4. Startup events are not crashing.
+
+5. Database connection failures do not prevent server startup.
+
+6. Redis connection failures do not prevent startup.
+
+7. Vector database failures do not prevent startup.
+
+8. MCP failures do not stop the API.
+
+9. Browser initialization (Playwright/Chromium) does not block startup.
+
+10. Background workers should start after the API becomes healthy.
+
+=================================================
+HEALTH ENDPOINT
+=================================================
+
+Create or fix
+
+GET /health
+
+It must return immediately.
+
+Example:
+
+{
+  "status":"ok",
+  "service":"backend",
+  "version":"1.0.0"
+}
+
+The endpoint must NOT:
+
+Connect to database
+
+Connect to Redis
+
+Launch browsers
+
+Load AI models
+
+Initialize MCP servers
+
+Call external APIs
+
+Only verify that the API process is alive.
+
+=================================================
+STARTUP FIX
+=================================================
+
+Move heavy initialization into background startup tasks.
 
 Examples:
 
-OPENAI_API_KEY
-DATABASE_URL
-SUPABASE_URL
-SUPABASE_KEY
-SMTP_HOST
-SMTP_USERNAME
-SMTP_PASSWORD
-MY_COMPANY_NAME
-CUSTOM_API_KEY
-CUSTOM_WEBHOOK
+Playwright
 
-Allow:
+Browser pool
 
-- Add
-- Edit
-- Delete
-- Search
-- Group by category
-- Copy value
-- Mask sensitive values
-- Reveal after re-authentication
-
-=================================
-INTEGRATIONS
-=================================
-
-Allow users to connect:
-
-Google
-GitHub
-GitLab
-Slack
-Discord
-Telegram
-WhatsApp Business Cloud API
-Supabase
-PostgreSQL
-MySQL
 Redis
+
 Qdrant
-Pinecone
-Stripe
-Razorpay
-AWS
-Cloudflare
-Railway
-Vercel
-Netlify
+
+Supabase
+
+OpenAI
+
+Embedding models
+
+MCP servers
+
+Load these AFTER the server starts accepting requests.
+
+=================================================
+ERROR HANDLING
+=================================================
+
+If any external dependency fails:
+
+Database
+
+Redis
+
+Supabase
+
+Qdrant
+
+Playwright
+
+Chromium
+
+MCP
+
+OpenAI
+
+Gemini
+
+Anthropic
+
 SMTP
-Twilio
-ElevenLabs
-Deepgram
-AssemblyAI
 
-Each integration should include:
+Do NOT crash the server.
 
-- Credentials
-- Connection Test
-- Health Status
-- Enable/Disable
-- Delete
-- Update
+Instead:
 
-=================================
-MCP SERVER MANAGEMENT
-=================================
+Log the error
 
-Allow users to register their own MCP Servers.
+Mark service unavailable internally
 
-Fields:
+Continue running
 
-- Name
-- Description
-- Server URL
-- Authentication Type
-- Headers
-- API Key
-- Bearer Token
-- OAuth
-- Permissions
-- Allowed Agents
+=================================================
+RAILWAY CONFIGURATION
+=================================================
 
-Support:
+Verify:
 
-- Add
-- Edit
-- Delete
-- Test Connection
-- Enable
-- Disable
-- Health Check
-- Auto Reconnect
+PORT environment variable
 
-=================================
-AGENT INTEGRATION
-=================================
+Host = 0.0.0.0
 
-Every AI Agent, Workflow, Browser Agent, MCP Tool, and Automation should automatically use the authenticated user's configured credentials.
+Correct startup command
 
-The system should:
+Correct working directory
 
-- Detect available providers
-- Use the user's preferred provider
-- Automatically fall back to another configured provider if one fails
-- Never expose secrets to other users
+Correct Procfile
 
-=================================
-SECURITY
-=================================
+Correct railway.toml
 
-- Encrypt all secrets before storing them.
-- Never return secrets through APIs.
-- Never expose secrets in logs.
-- Mask values in the UI.
-- Require re-authentication before revealing sensitive values.
-- Every user can only access their own credentials.
-- Record audit logs for all credential changes.
+Correct requirements.txt
 
-=================================
-ADMIN CONTROLS
-=================================
+=================================================
+VERIFY PLAYWRIGHT
+=================================================
 
-Allow administrators to configure:
+If Playwright is enabled:
 
-- Platform-managed API keys
-- Whether users can bring their own API keys
-- Per-provider limits
-- Maximum number of credentials
-- Default provider policies
+Ensure Chromium exists.
 
-=================================
-FINAL REQUIREMENTS
-=================================
+If Chromium cannot launch,
 
-- Analyse the existing codebase first.
-- Add only this feature.
-- Do not modify unrelated code.
-- Preserve backward compatibility.
-- Match the existing UI design and coding style.
-- Generate production-ready code with proper validation, error handling, API endpoints, database migration (only if required), and documentation.
+disable browser service temporarily
+
+instead of crashing the backend.
+
+=================================================
+OUTPUT
+=================================================
+
+1. Identify the exact reason the Railway health check fails.
+
+2. Show every affected file.
+
+3. Fix all startup issues.
+
+4. Generate corrected code.
+
+5. Ensure /health responds in under 100ms.
+
+6. Ensure Railway health checks pass.
+
+7. Ensure the backend continues running even if optional services fail.
+
+The final backend must deploy successfully on Railway without Docker and pass the Railway health check on the first attempt.
