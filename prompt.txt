@@ -1,0 +1,216 @@
+The application is already fully developed and production-ready.
+
+DO NOT redesign the UI.
+DO NOT refactor the existing architecture.
+DO NOT modify existing APIs unless required.
+DO NOT change the database schema unless absolutely necessary.
+DO NOT touch any existing feature.
+
+Your task is ONLY to implement the remaining feature: **User API Keys, Secrets Vault, Environment Variables, and Integration Management**.
+
+This feature must integrate seamlessly into the existing application.
+
+==============================
+FEATURE: USER SECRETS VAULT
+==============================
+
+Create a new page:
+
+Settings → API Keys & Integrations
+
+Users should be able to securely manage their own credentials without relying on platform-owned API keys.
+
+The application owner should also have the option to provide platform API keys, but users can override them with their own.
+
+=================================
+SUPPORTED AI PROVIDERS
+=================================
+
+Allow users to add credentials for:
+
+- OpenAI
+- Anthropic
+- Google Gemini
+- OpenRouter
+- Groq
+- Together AI
+- Fireworks AI
+- DeepSeek
+- xAI
+- Mistral AI
+- Cohere
+- Azure OpenAI
+- Ollama
+- LM Studio
+- Any OpenAI-Compatible API
+
+Each provider should support:
+
+- API Key
+- Base URL
+- Organization ID (optional)
+- Project ID (optional)
+- Default Model
+- Max Tokens
+- Temperature
+- Timeout
+
+Users should be able to:
+
+- Add
+- Edit
+- Delete
+- Test Connection
+- Enable/Disable
+- Set Default Provider
+- Configure Provider Priority
+- Configure Automatic Fallback
+
+=================================
+CUSTOM ENVIRONMENT VARIABLES
+=================================
+
+Users can create unlimited custom variables.
+
+Examples:
+
+OPENAI_API_KEY
+DATABASE_URL
+SUPABASE_URL
+SUPABASE_KEY
+SMTP_HOST
+SMTP_USERNAME
+SMTP_PASSWORD
+MY_COMPANY_NAME
+CUSTOM_API_KEY
+CUSTOM_WEBHOOK
+
+Allow:
+
+- Add
+- Edit
+- Delete
+- Search
+- Group by category
+- Copy value
+- Mask sensitive values
+- Reveal after re-authentication
+
+=================================
+INTEGRATIONS
+=================================
+
+Allow users to connect:
+
+Google
+GitHub
+GitLab
+Slack
+Discord
+Telegram
+WhatsApp Business Cloud API
+Supabase
+PostgreSQL
+MySQL
+Redis
+Qdrant
+Pinecone
+Stripe
+Razorpay
+AWS
+Cloudflare
+Railway
+Vercel
+Netlify
+SMTP
+Twilio
+ElevenLabs
+Deepgram
+AssemblyAI
+
+Each integration should include:
+
+- Credentials
+- Connection Test
+- Health Status
+- Enable/Disable
+- Delete
+- Update
+
+=================================
+MCP SERVER MANAGEMENT
+=================================
+
+Allow users to register their own MCP Servers.
+
+Fields:
+
+- Name
+- Description
+- Server URL
+- Authentication Type
+- Headers
+- API Key
+- Bearer Token
+- OAuth
+- Permissions
+- Allowed Agents
+
+Support:
+
+- Add
+- Edit
+- Delete
+- Test Connection
+- Enable
+- Disable
+- Health Check
+- Auto Reconnect
+
+=================================
+AGENT INTEGRATION
+=================================
+
+Every AI Agent, Workflow, Browser Agent, MCP Tool, and Automation should automatically use the authenticated user's configured credentials.
+
+The system should:
+
+- Detect available providers
+- Use the user's preferred provider
+- Automatically fall back to another configured provider if one fails
+- Never expose secrets to other users
+
+=================================
+SECURITY
+=================================
+
+- Encrypt all secrets before storing them.
+- Never return secrets through APIs.
+- Never expose secrets in logs.
+- Mask values in the UI.
+- Require re-authentication before revealing sensitive values.
+- Every user can only access their own credentials.
+- Record audit logs for all credential changes.
+
+=================================
+ADMIN CONTROLS
+=================================
+
+Allow administrators to configure:
+
+- Platform-managed API keys
+- Whether users can bring their own API keys
+- Per-provider limits
+- Maximum number of credentials
+- Default provider policies
+
+=================================
+FINAL REQUIREMENTS
+=================================
+
+- Analyse the existing codebase first.
+- Add only this feature.
+- Do not modify unrelated code.
+- Preserve backward compatibility.
+- Match the existing UI design and coding style.
+- Generate production-ready code with proper validation, error handling, API endpoints, database migration (only if required), and documentation.

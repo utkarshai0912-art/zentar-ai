@@ -1,0 +1,48 @@
+# Zentar Intelligence — Backend Dependencies
+# Python 3.11+
+
+# Web Framework
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+pydantic==2.9.0
+pydantic-settings==2.5.0
+python-multipart==0.0.12
+
+# Database
+sqlalchemy[asyncio]==2.0.35
+asyncpg==0.29.0
+alembic==1.13.2
+
+# Cache & Queue
+redis[hiredis]==5.1.1
+
+# Authentication
+python-jose[cryptography]==3.3.0
+bcrypt==4.2.0
+passlib[bcrypt]==1.7.4
+python-jwt==4.1.0
+
+# AI / HTTP
+aiohttp==3.10.5
+tiktoken==0.8.0
+
+# Data Validation
+email-validator==2.2.0
+
+# Security
+cryptography==43.0.0
+
+# Logging
+loguru==0.7.2
+
+# Development
+python-dotenv==1.0.1
+
+# Browser Automation
+playwright==1.47.0
+
+# Data Processing
+numpy==1.26.4
+
+# YAML parsing for marketplace agent definitions
+PyYAML==6.0.2
