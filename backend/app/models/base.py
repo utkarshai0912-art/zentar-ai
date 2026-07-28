@@ -69,3 +69,4 @@ class BaseModel(TimestampMixin, SoftDeleteMixin, UUIDMixin):
     All domain models should inherit from this.
     """
     __abstract__ = True
+    __allow_unmapped__ = True
